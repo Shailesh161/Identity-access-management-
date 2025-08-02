@@ -1,7 +1,7 @@
 **Author:** Shailesh Gatkul  
 **Date:** 29 July 2025
 
-# Just-in-Time (JIT) Access – A Humanized, Real-World IAM Perspective
+# Just-in-Time (JIT) Access
 
 ## 🔹 What is JIT Access?
 
