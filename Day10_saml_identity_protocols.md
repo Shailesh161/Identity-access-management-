@@ -60,4 +60,3 @@ A remote employee tries to access their company’s HR portal. They are redirect
 
 ---
 
-This explanation should give you a full understanding of how SAML works, how it differs from other protocols, and how it’s practically implemented using IAM tools.
