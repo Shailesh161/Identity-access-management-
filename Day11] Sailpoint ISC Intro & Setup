@@ -1,0 +1,27 @@
+1] How do you enable tenant access for the support team to troubleshoot an issue?
+Answer: Go to Admin -> Global -> Grant Tenant Access, turn on the toggle, and set an expiration
+date.
+
+2] How to request admin access?
+Answer: Go to Request Center -> Access Profiles -> Select SailPoint ISC Admins -> Review Request -> Submit Request.
+
+3] How do you approve an admin access request as a manager?
+Answer: Go to Approvals -> Approval Requests, then choose to Approve, Deny, or Reassign the request.
+
+4] Where do we get the PAT (Personal Access Token) or Client ID required for granting tenant access?
+Answer: Login -> Admin -> Top-right (your name) -> Preferences ->  Personal Access Tokens ->  New Token ->  Select scopes -> Create.
+For granting access to all scopes search: sp:scopes:all
+
+5] One person can create how many Personal Access Tokens?
+Answer: Maximum 10 tokens.
+
+6] How to connect Tenant with VS Code?
+Answer: Install the SailPoint ISC extension -> open the ISC section -> grant tenant access -> generate PAT -> Paste Secret ID -> Paste Client ID -> Tenant connected.
+
+7] For production tenants, ensure the tenant is locked (read-only) in VS Code.
+
+8] What format do objects have?
+Answer: ISC uses JSON; IIQ uses XML.
+
+9] How to set up Postman?
+Answer: Open SailPoint Postman collection link -> choose API version -> right-click -> Fork -> appears in local Postman.
