@@ -1,45 +1,55 @@
 }
+**Author:** Shailesh Gatkul
+---
 
-# 100 Days of IAM
-
-## Day 07 – Full vs Delta Aggregation in SailPoint ISC
+# Full and Delta Aggregation in SailPoint ISC
 
 ---
 
-## 🔹 What is Aggregation in SailPoint ISC?
+## What is Aggregation in SailPoint ISC?
 
-In **SailPoint Identity Security Cloud (ISC)**, aggregation is the process of **fetching identity-related data from target applications into SailPoint**.
+In **SailPoint Identity Security Cloud (ISC)**, **Aggregation** is the process of **collecting identity-related data from target applications into SailPoint**.
 
-During aggregation, SailPoint collects:
+During aggregation, SailPoint pulls:
 
 * User accounts
 * Entitlements (roles, groups, permissions)
 * Account–entitlement relationships
 
-👉 In simple terms, aggregation means **synchronizing application data into SailPoint** so identities can be governed.
+In simple terms, aggregation means **keeping SailPoint in sync with connected applications** so identities can be governed correctly.
+
+> Without aggregation, SailPoint would not know:
+>
+> * Who exists in the application
+> * What access they have
+> * What has changed over time
 
 ---
 
-## 🔹 Full Aggregation (Unoptimized Aggregation)
+## What is Full Aggregation?
 
 ### Definition
 
-**Full Aggregation** fetches **all data from the target application**, irrespective of whether the data has changed or not.
+**Full Aggregation** is a process where **all data from the target application is fetched**, regardless of whether the data has changed or not.
 
-It includes:
+It retrieves:
 
 * All accounts
 * All entitlements
 * All account–entitlement mappings
 
+This is also referred to as **Unoptimized Aggregation** because it processes everything every time.
+
 ---
 
 ### When is Full Aggregation Used?
 
-* Initial onboarding of an application
-* Major schema or attribute changes
-* Data corruption or reconciliation scenarios
-* Rare baseline refresh operations
+Full Aggregation is typically used when:
+
+* An application is onboarded for the first time
+* Major schema or attribute changes occur
+* Data inconsistency or corruption is suspected
+* A complete baseline refresh is required (rare in production)
 
 ---
 
@@ -47,20 +57,23 @@ It includes:
 
 **Application:** Active Directory (AD)
 
-* AD contains 50,000 users
+**Scenario:**
+AD is integrated with SailPoint ISC for the first time.
+
+* AD contains 50,000 user accounts
 * SailPoint runs a Full Aggregation
 
-**Outcome:**
+**Result:**
 
 * All 50,000 users are imported
 * All AD groups are imported
-* Complete user–group relationships are created
+* User–group relationships are established
 
-Even if only one user changes later, Full Aggregation still reads **all 50,000 accounts**.
+Even if only one user changes later, Full Aggregation still reads **all 50,000 records**.
 
 ---
 
-### Key Characteristics
+### Key Characteristics of Full Aggregation
 
 * Time-consuming
 * High load on source application
@@ -71,31 +84,35 @@ Even if only one user changes later, Full Aggregation still reads **all 50,000 a
 
 ### Simple Analogy
 
-Reading the **entire book again**, even if only one page was updated.
+Reading the **entire book again**, even though only one page was updated.
 
 ---
 
-## 🔹 Delta Aggregation (Optimized Aggregation)
+## What is Delta Aggregation?
 
 ### Definition
 
-**Delta Aggregation** fetches **only the changes** since the last successful aggregation.
+**Delta Aggregation** fetches **only the data that has changed** since the last successful aggregation.
 
-It processes:
+It includes:
 
 * Newly created accounts
-* Updated accounts
+* Updated or modified accounts
 * Deleted or disabled accounts
-* Modified entitlements
+* Updated entitlements
+
+This is called **Optimized Aggregation** because it avoids unnecessary processing.
 
 ---
 
 ### When is Delta Aggregation Used?
 
-* Daily or scheduled synchronization
+Delta Aggregation is used for:
+
+* Daily or scheduled synchronizations
 * Large enterprise environments
-* Production systems
-* Performance-sensitive IAM setups
+* Production IAM systems
+* Performance-efficient identity governance
 
 ---
 
@@ -103,20 +120,20 @@ It processes:
 
 **Application:** Active Directory
 
-Changes in the last 24 hours:
+**Changes in the last 24 hours:**
 
-* 3 new joiners
-* 2 role changes
-* 1 termination
+* 3 new employees joined
+* 2 employees changed departments
+* 1 employee left the organization
 
 **Delta Aggregation Result:**
 
 * Only these 6 changes are processed
-* Existing 50,000 accounts are untouched
+* Existing 50,000 users are not re-fetched
 
 ---
 
-### Key Characteristics
+### Key Characteristics of Delta Aggregation
 
 * Fast and efficient
 * Low system and application load
@@ -131,63 +148,88 @@ Reading **today’s newspaper**, not the entire archive.
 
 ---
 
-## 🔹 Full vs Delta Aggregation – Comparison
+## Full vs Delta Aggregation – Comparison
 
-| Aspect      | Full Aggregation | Delta Aggregation |
-| ----------- | ---------------- | ----------------- |
-| Data Pulled | All data         | Only changed data |
-| Speed       | Slow             | Fast              |
-| System Load | High             | Low               |
-| Frequency   | Rare             | Frequent          |
-| Usage       | Initial setup    | Regular updates   |
-| IAM Fit     | Baseline sync    | Production sync   |
-
----
-
-## 🔹 SailPoint ISC UI vs Backend Behavior
-
-* In **SailPoint ISC UI**, aggregation triggers **only Delta Aggregation**
-* Full Aggregation **cannot be triggered directly from UI**
-* Full Aggregation is executed via:
-
-  * Backend APIs
-  * Tools like **VS Code** or **Postman**
-
-👉 Both VS Code and Postman internally use **SailPoint REST APIs**.
+| Aspect       | Full Aggregation            | Delta Aggregation |
+| ------------ | --------------------------- | ----------------- |
+| Data Pulled  | All data                    | Only changed data |
+| Speed        | Slow                        | Fast              |
+| System Load  | High                        | Low               |
+| Frequency    | Rare                        | Frequent          |
+| Usage        | Initial setup / major fixes | Regular updates   |
+| Optimization | Unoptimized                 | Optimized         |
 
 ---
 
-## 🔹 Enterprise IAM Best Practice
+## Aggregation in SailPoint ISC – UI vs Backend
 
-1. Run **Full Aggregation** during application onboarding
-2. Schedule **Delta Aggregation** for daily or near-real-time updates
-3. Use Full Aggregation only for major structural changes
+In **SailPoint ISC**:
+
+* Aggregation triggered from the **UI supports only Delta Aggregation**
+* Full Aggregation **cannot be triggered directly from the UI**
+
+To run Full Aggregation, backend tools are used:
+
+* **VS Code**
+* **Postman**
+
+> Both VS Code and Postman internally use **SailPoint REST APIs**.
+
+---
+
+## How to Verify Aggregation Type from UI
+
+Path:
+
+```
+Admin → Connections → Sources → Select Source
+```
+
+Steps:
+
+1. Open **Account Aggregation**
+2. Scroll to **Aggregation History**
+3. Open **Details** of the aggregation run
+
+**Interpretation:**
+
+* **Optimization = Enabled** → Delta Aggregation
+* **Optimization = Disabled** → Full Aggregation
+
+---
+
+## Enterprise IAM Best Practices
+
+* Run **Full Aggregation** only during onboarding or major changes
+* Schedule **Delta Aggregation** for daily or near-real-time updates
+* Avoid frequent Full Aggregations in production
 
 This ensures:
 
-* Accuracy
 * Performance
 * Scalability
+* Stable identity governance
 
 ---
 
-## 🔹 Interview-Ready One-Liners
+## Interview One-Liners
 
-* **Full Aggregation:** Loads all application data every time, regardless of changes.
+* **Full Aggregation:** Loads all application data every time, irrespective of changes.
 * **Delta Aggregation:** Loads only incremental changes since the last aggregation.
 
 ---
 
-## 🔹 Why Delta Aggregation is Critical in IAM
+## Key Takeaway
 
-* Enterprises manage millions of identities
-* Frequent full aggregations degrade performance
-* Delta aggregation enables scalable, cloud-ready IAM governance
+> Full Aggregation establishes the baseline, while Delta Aggregation keeps identities continuously updated without impacting performance.
 
 ---
 
-## ✅ Key Takeaway
-
-> Use **Full Aggregation** to establish a baseline and **Delta Aggregation** to keep identities continuously in sync without impacting performance.
+💬 I’m always open to feedback, suggestions, collaboration, or professional opportunities in the Identity and Access Management (IAM) space.
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/shailesh-gatkul/) or reach out via email at [shaileshgatkul2003@gmail.com](mailto:shaileshgatkul2003@gmail.com).
 
 ---
+
+📌 **Disclaimer:**
+This repository is intended for **personal learning and educational purposes only**. The content has been compiled using knowledge gathered from publicly available sources such as documentation, blogs, community discussions, and practical experience.
+If you believe any part of this content requires credit, correction, or removal, please contact me.
