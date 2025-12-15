@@ -1,5 +1,4 @@
-}
-**Author:** Shailesh Gatkul
+
 ---
 
 # Full and Delta Aggregation in SailPoint ISC
