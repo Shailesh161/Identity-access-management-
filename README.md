@@ -1,4 +1,4 @@
-# 🔐 100 Days of Identity and Access Management (IAM)
+# 🔐 My Identity and Access Management (IAM) Learning Journey.
 
 This repository is a daily log of my learning journey in the field of **Identity and Access Management (IAM)**.
 
